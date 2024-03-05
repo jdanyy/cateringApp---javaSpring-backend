@@ -1,0 +1,6 @@
+version: '3.8'
+
+include:
+  - './db/docker-compose.yml'
+  - './jdim2141-spring/docker-compose.dev.yml'
+  - './jdim2141-spring/docker-compose.prod.yml'

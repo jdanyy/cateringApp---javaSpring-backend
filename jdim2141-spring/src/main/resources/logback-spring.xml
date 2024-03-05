@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Source: https://www.baeldung.com/spring-boot-logging -->
+
+<configuration>
+
+  <appender class="ch.qos.logback.core.ConsoleAppender"
+    name="Console">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>
+        %white(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C): %msg%n%throwable
+      </Pattern>
+    </layout>
+  </appender>
+
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender"
+    name="RollingFile">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>%d %p %C [%t] %m%n</Pattern>
+    </encoder>
+    <file>${LOGS}/spring-boot-logger.log</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>
+        ${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log
+      </fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+  </appender>
+
+  <logger additivity="false" level="trace" name="org.catteringapp">
+    <appender-ref ref="RollingFile"/>
+    <appender-ref ref="Console"/>
+  </logger>
+
+  <logger additivity="false" level="debug" name="org.springframework.security">
+    <appender-ref ref="RollingFile"/>
+    <appender-ref ref="Console"/>
+  </logger>
+
+  <property name="LOGS" value="./logs"/>
+
+  <root level="info">
+    <appender-ref ref="RollingFile"/>
+    <appender-ref ref="Console"/>
+  </root>
+
+</configuration>

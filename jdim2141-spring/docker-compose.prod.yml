@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  catering-app-prod:
+    build:
+      context: ..
+      dockerfile: ./jdim2141-spring/Dockerfile
+      args:
+        profile: prod
+    ports:
+      - ${CATERING_APP_PORT}:8080
+    depends_on:
+      - postgres-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped
